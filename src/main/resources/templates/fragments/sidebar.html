@@ -89,20 +89,25 @@
             </li>
 
             <li class="nav-item" th:classappend="${activePage == 'category' ? 'active' : ''}">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCategory"
-                    aria-expanded="true" aria-controls="collapseCategory">
+                <a class="nav-link" href="#" data-toggle="collapse" 
+                   th:classappend="${activeSubPage == 'category-list' or activeSubPage == 'add-category' ? '' : 'collapsed'}"
+                   th:aria-expanded="${activeSubPage == 'category-list' or activeSubPage == 'add-category'}"
+                   data-target="#collapseCategory" aria-controls="collapseCategory">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Category</span>
                 </a>
-                <div id="collapseCategory" class="collapse" aria-labelledby="headingCategories"
-                    data-parent="#accordionSidebar">
+                <div id="collapseCategory" class="collapse" 
+                     th:classappend="${activeSubPage == 'category-list' or activeSubPage == 'add-category' ? 'show' : ''}" 
+                     aria-labelledby="headingCategories" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="/admin/category">List</a>
-                        <a class="collapse-item" href="/admin/add-category">Add New</a>
+                        <a class="collapse-item" href="/admin/category" th:classappend="${activeSubPage == 'category-list' ? 'active' : ''}">List</a>
+                        <a class="collapse-item" href="/admin/add-category" th:classappend="${activeSubPage == 'add-category' ? 'active' : ''}">Add New</a>
                     </div>
                 </div>
             </li>
+            
+            
 
             <!-- Nav Item - Users -->
             <li class="nav-item" th:classappend="${activePage == 'users' ? 'active' : ''}">

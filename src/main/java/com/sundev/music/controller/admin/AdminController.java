@@ -1,5 +1,6 @@
 package com.sundev.music.controller.admin;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sundev.music.model.Category;
 import com.sundev.music.model.Users;
@@ -59,6 +64,7 @@ public class AdminController {
     @GetMapping("/category")
     public String category(Model model) {
         model.addAttribute("activePage", "category");
+        model.addAttribute("activeSubPage", "category-list");
         return "category";
     }
 
@@ -66,6 +72,7 @@ public class AdminController {
     @GetMapping("/add-category")
     public String addCategory(Model model) {
         model.addAttribute("activePage", "category");
+        model.addAttribute("activeSubPage", "add-category");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         authentication.getAuthorities().forEach(auth -> {
             System.out.println("Authenticated authority: " + auth.getAuthority());
@@ -74,8 +81,12 @@ public class AdminController {
     }
 
 
-    @PostMapping("/add-category")
-    public String postCategory(@RequestBody Category entity) {
+    @PostMapping("/addCategory")
+    public String postCategory(@ModelAttribute(name = "category") Category entity,
+     @RequestParam("previewImg") MultipartFile file,Model model) throws IOException {
+        
+        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
         List<Users> users = service.getUsers();
         return "redirect:/add-category";
     }
